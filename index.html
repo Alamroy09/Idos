@@ -1,272 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>idOS Project Quiz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>idOS Project — Quiz</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif;}
     body {
-      background: linear-gradient(135deg, #7C5CFF, #4BB6FF);
+      background: radial-gradient(circle at top left, #0d1224, #0a0e1a);
       color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
     }
     .container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 35px 28px;
+      max-width: 420px;
       width: 90%;
-      max-width: 600px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      animation: fadeIn 0.8s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
+      box-shadow: 0 0 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(20px);
+      text-align: left;
     }
     .logo {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+      display: inline-block;
+      background: linear-gradient(135deg, #7C5CFF, #4BB6FF);
+      color: #fff;
       font-weight: 700;
-      font-size: 26px;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
     h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #fff;
+      font-size: 22px;
+      color: #dbe4ff;
+      margin-bottom: 6px;
     }
-    p {
-      font-size: 16px;
-      color: #b3c1ff;
-      margin-bottom: 25px;
+    p.desc {
+      font-size: 15px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 20px;
     }
-    button {
-      background: linear-gradient(90deg, #7C5CFF, #4BB6FF);
-      color: #fff;
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    button, .btn {
       border: none;
-      border-radius: 30px;
-      padding: 12px 28px;
-      font-size: 16px;
       cursor: pointer;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 18px;
       transition: 0.3s;
     }
-    button:hover {
-      transform: scale(1.05);
-      opacity: 0.95;
+    .primary {
+      background: linear-gradient(90deg, #7C5CFF, #4BB6FF);
+      color: #fff;
     }
+    .primary:hover {opacity: 0.9;}
     .secondary {
-      background: rgba(255,255,255,0.2);
-      margin-top: 12px;
+      background: rgba(255,255,255,0.1);
+      color: #cbd5e1;
     }
-    .hidden { display: none; }
-
-    .option {
-      background: rgba(255, 255, 255, 0.15);
-      margin: 8px 0;
-      padding: 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.2s;
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 25px;
     }
-    .option:hover { background: rgba(255, 255, 255, 0.25); }
-    .option.selected { background: rgba(76, 200, 255, 0.5); }
-
-    .disabled {
-      background: rgba(255,255,255,0.15) !important;
-      cursor: not-allowed;
-      opacity: 0.5;
+    .tag {
+      background: rgba(255,255,255,0.08);
+      color: #94a3b8;
+      border-radius: 30px;
+      padding: 5px 12px;
+      font-size: 13px;
     }
-
-    .footer {
-      margin-top: 25px;
+    h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #e2e8f0;
     }
-    .follow-btn {
+    ul {
+      list-style: none;
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    .follow {
+      display: inline-block;
       background: linear-gradient(90deg, #4BB6FF, #7C5CFF);
       color: #fff;
       text-decoration: none;
-      padding: 12px 24px;
-      border-radius: 25px;
       font-weight: 600;
-      display: inline-block;
-      margin-top: 12px;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
     }
+    /* Hidden Sections */
+    .hidden { display: none; }
+
+    /* QUIZ SECTION */
+    #quiz, #result {
+      text-align: center;
+    }
+    .option {
+      background: rgba(255, 255, 255, 0.08);
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .option:hover { background: rgba(255,255,255,0.15); }
+    .option.selected { background: rgba(76,200,255,0.4); }
+    .disabled {opacity: 0.5; pointer-events: none;}
   </style>
 </head>
 <body>
-  <!-- Welcome Section -->
+
+  <!-- Front Page -->
   <div class="container" id="welcome">
-    <div class="logo">idOS</div>
-    <h1>idOS Project Quiz</h1>
-    <p>Learn about idOS Network & test your knowledge</p>
-    <button onclick="startQuiz()">Start Quiz</button>
-    <br>
-    <a href="https://idos.network/docs" target="_blank"><button class="secondary">Official Docs</button></a>
+    <div class="logo">IDOS</div>
+    <h1>idOS Project — Quiz</h1>
+    <p class="desc">Learn about idOS Network & test your knowledge</p>
+
+    <p class="desc">
+      Short quiz about idOS — decentralized identity infrastructure, tokenomics, partners and core tech.  
+      12 questions, instant results.
+    </p>
+
+    <div class="buttons">
+      <button class="primary" onclick="startQuiz()">▶ Start Quiz</button>
+      <a href="https://idos.network/docs" target="_blank"><button class="secondary">Official docs</button></a>
+    </div>
+
+    <div class="tags">
+      <span class="tag">12 Questions</span>
+      <span class="tag">Multiple Choice</span>
+      <span class="tag">Instant Feedback</span>
+    </div>
+
+    <h2>What you'll learn</h2>
+    <ul>
+      <li>idOS purpose & architecture</li>
+      <li>Token supply & TGE timing</li>
+      <li>Security tech (MPC)</li>
+      <li>Ecosystem & partners</li>
+    </ul>
+
+    <a href="https://x.com/idOS_network" target="_blank" class="follow">🐦 Follow on X</a>
   </div>
 
-  <!-- Quiz Section -->
+  <!-- QUIZ Section -->
   <div class="container hidden" id="quiz">
-    <h2 id="question">Question text</h2>
+    <h2 id="question"></h2>
     <div id="options"></div>
-    <button id="nextBtn" class="disabled" onclick="nextQuestion()">Next</button>
+    <button id="nextBtn" class="primary disabled" onclick="nextQuestion()">Next</button>
   </div>
 
-  <!-- Result Section -->
+  <!-- RESULT Section -->
   <div class="container hidden" id="result">
     <h2>Your Score: <span id="score"></span>/12</h2>
-    <button onclick="showAnswers()">Show Answers</button>
-    <button onclick="restartQuiz()">Restart Quiz</button>
-    <div class="footer">
-      <a href="https://x.com/idOS_network" target="_blank" class="follow-btn">Follow on X</a>
-    </div>
+    <button class="primary" onclick="showAnswers()">Show Answers</button>
+    <button class="secondary" onclick="restartQuiz()">Restart Quiz</button>
+    <br><br>
+    <a href="https://x.com/idOS_network" target="_blank" class="follow">🐦 Follow on X</a>
   </div>
 
   <script>
     const questions = [
-      {
-        q: "What is the main purpose of idOS Network?",
-        options: ["Decentralized identity layer for Web3", "Blockchain gaming", "AI computation", "DeFi trading"],
-        answer: 0
-      },
-      {
-        q: "Which protocol powers idOS data access?",
-        options: ["Ethereum", "Polygon", "NEAR", "Solana"],
-        answer: 2
-      },
-      {
-        q: "Who can access idOS user data?",
-        options: ["Everyone", "Only authorized apps", "Only node operators", "Anyone with API key"],
-        answer: 1
-      },
-      {
-        q: "What standard does idOS follow for identities?",
-        options: ["DID (Decentralized Identifiers)", "KYC token", "NFT-based ID", "ERC-4337"],
-        answer: 0
-      },
-      {
-        q: "What is stored in idOS nodes?",
-        options: ["Encrypted user data", "Smart contracts", "NFTs", "DeFi pools"],
-        answer: 0
-      },
-      {
-        q: "idOS ensures data privacy through:",
-        options: ["Encryption and access control", "Public blockchain", "Zero-knowledge staking", "Central servers"],
-        answer: 0
-      },
-      {
-        q: "Which industry is idOS mainly solving problems for?",
-        options: ["DeFi & Web3 onboarding", "AI model training", "NFT trading", "GameFi"],
-        answer: 0
-      },
-      {
-        q: "What language is idOS SDK mainly written in?",
-        options: ["Rust", "Python", "JavaScript/TypeScript", "Go"],
-        answer: 2
-      },
-      {
-        q: "What is the idOS approach to identity?",
-        options: ["User-owned and portable", "Centralized database", "Custodial", "Temporary IDs"],
-        answer: 0
-      },
-      {
-        q: "idOS uses blockchain mainly for:",
-        options: ["Data registry & access control", "AI training", "Gaming", "Transaction fees"],
-        answer: 0
-      },
-      {
-        q: "Which company supports idOS?",
-        options: ["NEAR Foundation", "Google", "Binance", "Facebook"],
-        answer: 0
-      },
-      {
-        q: "What makes idOS unique?",
-        options: ["Open-source decentralized identity system", "Only centralized user KYC", "Only NFT support", "No SDK"],
-        answer: 0
-      }
+      { q:"What is the main purpose of idOS Network?", options:["Decentralized identity layer for Web3","Blockchain gaming","AI computation","DeFi trading"], answer:0 },
+      { q:"Which protocol powers idOS data access?", options:["Ethereum","Polygon","NEAR","Solana"], answer:2 },
+      { q:"Who can access idOS user data?", options:["Everyone","Only authorized apps","Only node operators","Anyone with API key"], answer:1 },
+      { q:"What standard does idOS follow for identities?", options:["DID (Decentralized Identifiers)","KYC token","NFT-based ID","ERC-4337"], answer:0 },
+      { q:"What is stored in idOS nodes?", options:["Encrypted user data","Smart contracts","NFTs","DeFi pools"], answer:0 },
+      { q:"idOS ensures data privacy through:", options:["Encryption and access control","Public blockchain","Zero-knowledge staking","Central servers"], answer:0 },
+      { q:"Which industry is idOS mainly solving problems for?", options:["DeFi & Web3 onboarding","AI model training","NFT trading","GameFi"], answer:0 },
+      { q:"What language is idOS SDK mainly written in?", options:["Rust","Python","JavaScript/TypeScript","Go"], answer:2 },
+      { q:"What is the idOS approach to identity?", options:["User-owned and portable","Centralized database","Custodial","Temporary IDs"], answer:0 },
+      { q:"idOS uses blockchain mainly for:", options:["Data registry & access control","AI training","Gaming","Transaction fees"], answer:0 },
+      { q:"Which company supports idOS?", options:["NEAR Foundation","Google","Binance","Facebook"], answer:0 },
+      { q:"What makes idOS unique?", options:["Open-source decentralized identity system","Only centralized user KYC","Only NFT support","No SDK"], answer:0 }
     ];
 
-    let current = 0;
-    let score = 0;
-    let userAnswers = [];
+    let current=0, score=0, userAnswers=[];
+    const welcome=document.getElementById("welcome"), quiz=document.getElementById("quiz"), result=document.getElementById("result");
+    const questionEl=document.getElementById("question"), optionsEl=document.getElementById("options"), nextBtn=document.getElementById("nextBtn"), scoreEl=document.getElementById("score");
 
-    const welcome = document.getElementById("welcome");
-    const quiz = document.getElementById("quiz");
-    const result = document.getElementById("result");
-    const questionEl = document.getElementById("question");
-    const optionsEl = document.getElementById("options");
-    const nextBtn = document.getElementById("nextBtn");
-    const scoreEl = document.getElementById("score");
-
-    function startQuiz() {
-      welcome.classList.add("hidden");
-      quiz.classList.remove("hidden");
-      loadQuestion();
-    }
-
-    function loadQuestion() {
+    function startQuiz(){ welcome.classList.add("hidden"); quiz.classList.remove("hidden"); loadQuestion(); }
+    function loadQuestion(){
       nextBtn.classList.add("disabled");
-      const q = questions[current];
-      questionEl.textContent = q.q;
-      optionsEl.innerHTML = "";
-      q.options.forEach((opt, i) => {
-        const div = document.createElement("div");
-        div.className = "option";
-        div.textContent = opt;
-        div.onclick = () => selectOption(div, i);
-        optionsEl.appendChild(div);
-      });
+      const q=questions[current]; questionEl.textContent=q.q; optionsEl.innerHTML="";
+      q.options.forEach((opt,i)=>{const div=document.createElement("div");div.className="option";div.textContent=opt;div.onclick=()=>selectOption(div,i);optionsEl.appendChild(div);});
     }
-
-    function selectOption(div, index) {
-      document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
-      div.classList.add("selected");
-      userAnswers[current] = index;
-      nextBtn.classList.remove("disabled");
-    }
-
-    function nextQuestion() {
-      if (userAnswers[current] === undefined) return;
-      if (userAnswers[current] === questions[current].answer) score++;
+    function selectOption(div,index){document.querySelectorAll(".option").forEach(o=>o.classList.remove("selected"));div.classList.add("selected");userAnswers[current]=index;nextBtn.classList.remove("disabled");}
+    function nextQuestion(){
+      if(userAnswers[current]===undefined)return;
+      if(userAnswers[current]===questions[current].answer)score++;
       current++;
-      if (current < questions.length) {
-        loadQuestion();
-      } else {
-        showResult();
-      }
+      if(current<questions.length)loadQuestion(); else showResult();
     }
-
-    function showResult() {
-      quiz.classList.add("hidden");
-      result.classList.remove("hidden");
-      scoreEl.textContent = score;
+    function showResult(){quiz.classList.add("hidden");result.classList.remove("hidden");scoreEl.textContent=score;}
+    function showAnswers(){
+      let html="<h3>Correct Answers:</h3><ul style='text-align:left'>";
+      questions.forEach((q,i)=>{html+=`<li><strong>Q${i+1}:</strong> ${q.q}<br><em>Answer:</em> ${q.options[q.answer]}</li><br>`;});
+      html+="</ul>"; result.innerHTML=html+`<a href='https://x.com/idOS_network' target='_blank' class='follow'>🐦 Follow on X</a>`;
     }
-
-    function showAnswers() {
-      let html = "<h3>Correct Answers:</h3><ul style='text-align:left'>";
-      questions.forEach((q, i) => {
-        html += `<li><strong>Q${i+1}:</strong> ${q.q}<br><em>Answer:</em> ${q.options[q.answer]}</li><br>`;
-      });
-      html += "</ul>";
-      result.innerHTML = html + `<div class="footer"><a href='https://x.com/idOS_network' target='_blank' class='follow-btn'>Follow on X</a></div>`;
-    }
-
-    function restartQuiz() {
-      current = 0; score = 0; userAnswers = [];
-      result.classList.add("hidden");
-      welcome.classList.remove("hidden");
-    }
+    function restartQuiz(){current=0;score=0;userAnswers=[];result.classList.add("hidden");welcome.classList.remove("hidden");}
   </script>
 </body>
 </html>
