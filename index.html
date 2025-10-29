@@ -1,395 +1,224 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>idOS Project — Quiz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg-1: #071029;
-      --bg-2: #07182b;
-      --card: #0b1220;
-      --muted: #9fb0d0;
-      --accent: #7c5cff;
-      --accent-2: #4bb6ff;
-      --glass: rgba(255,255,255,0.03);
-      --white: #e6eef8;
-      --success: #22c55e;
-      --danger: #ff6b6b;
-      --radius: 14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
     body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;
-      background:linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 100%);
-      color:var(--white);
+      background:radial-gradient(circle at 20% 30%,#0d1224 0%,#050810 100%);
+      color:#fff;
       display:flex;
-      align-items:center;
       justify-content:center;
-      padding:28px;
+      align-items:center;
+      min-height:100vh;
+      padding:20px;
     }
-
-    /* Container */
-    .wrap{width:100%;max-width:980px}
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.007));
-      border-radius:var(--radius);
-      padding:26px;
-      border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 20px 50px rgba(2,6,23,0.6);
+    .container{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      max-width:420px;
+      width:100%;
+      padding:30px 26px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.2);
     }
-
-    /* Header / logo */
-    .brand{display:flex;align-items:center;gap:16px;margin-bottom:8px}
     .logo{
-      width:64px;height:64px;border-radius:12px;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      display:flex;align-items:center;justify-content:center;font-weight:800;
-      font-size:18px;color:white;box-shadow:0 10px 30px rgba(124,92,255,0.14)
+      width:60px;height:60px;border-radius:12px;
+      background:linear-gradient(135deg,#7c5cff,#4bb6ff);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:20px;
+      margin-bottom:14px;
     }
-    h1{margin:0;font-size:20px}
-    p.lead{margin:0;color:var(--muted);font-size:13px}
+    h1{font-size:22px;margin-bottom:6px;}
+    p.lead{color:#b5b8c7;font-size:14px;margin-bottom:24px;line-height:1.5;}
+    .btn{
+      background:linear-gradient(90deg,#7c5cff,#4bb6ff);
+      color:white;font-weight:600;
+      border:none;
+      border-radius:10px;
+      padding:12px 20px;
+      cursor:pointer;
+      transition:transform .15s ease;
+    }
+    .btn:hover{transform:scale(1.04);}
+    .btn[disabled]{opacity:0.5;cursor:not-allowed;}
+    .secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.1);
+      margin-top:10px;
+    }
+    .info-badges{
+      display:flex;gap:8px;flex-wrap:wrap;
+      margin-top:14px;margin-bottom:14px;
+    }
+    .badge{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:6px 10px;border-radius:999px;
+      font-size:12px;color:#b5b8c7;
+    }
+    .section-title{margin-top:14px;font-size:15px;font-weight:600;}
+    ul{margin-top:8px;margin-bottom:18px;}
+    li{font-size:14px;color:#b5b8c7;line-height:1.6;}
 
-    /* Welcome screen */
-    .welcome{
-      display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:center;margin-top:14px;
-    }
-    .welcome .left{padding:14px}
-    .hero-title{font-size:26px;margin:0 0 8px 0}
-    .hero-sub{color:var(--muted);margin:0 0 18px 0}
-    .start-btn{
-      display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061126;font-weight:800;border:0;cursor:pointer;font-size:15px;
-      box-shadow:0 10px 30px rgba(75,182,255,0.08);
-    }
-    .card-mini{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.02);
-    }
-    .meta-row{display:flex;gap:12px;align-items:center;margin-top:10px}
-    .pill{background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:999px;color:var(--muted);font-weight:600;font-size:13px}
-
-    /* Quiz area */
-    .quiz{
-      margin-top:18px;display:none;flex-direction:column;gap:12px;
-    }
-    .progress{height:10px;background:rgba(255,255,255,0.02);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .36s ease}
-
-    .qcard{margin-top:14px;background:rgba(255,255,255,0.02);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
-    .qtop{display:flex;justify-content:space-between;align-items:center}
-    .qnum{color:var(--muted);font-size:13px}
-    .qtext{font-weight:700;margin-top:10px;font-size:18px}
-
-    .options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    /* Quiz Section */
+    .quiz{display:none;}
+    .question{margin-bottom:12px;font-size:16px;font-weight:600;}
+    .options{display:grid;gap:10px;margin-top:10px;}
     .opt{
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
-      border:1px solid rgba(255,255,255,0.02);
-      padding:12px;border-radius:10px;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;
-      color:var(--white);
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:all .15s ease;
     }
-    .opt:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(2,6,23,0.5)}
-    .opt.selected{outline:2px solid rgba(124,92,255,0.14);background:linear-gradient(90deg,rgba(124,92,255,0.05),rgba(75,182,255,0.02))}
-
-    .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-    .btn{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061126}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
-
-    /* Results */
-    .result{display:none;margin-top:18px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.02);text-align:center}
-    .score{font-size:40px;font-weight:800;margin:8px 0}
-    .result-meta{display:flex;gap:10px;justify-content:center;margin-top:8px}
-    .answers{margin-top:14px;text-align:left}
-    .answer-item{padding:12px;border-radius:10px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02);margin-bottom:8px}
-    .correct{color:var(--success);font-weight:800}
-    .wrong{color:var(--danger);font-weight:800}
-
-    /* Footer follow */
-    .follow-row{display:flex;justify-content:center;margin-top:14px;gap:8px}
-    .follow-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061126;font-weight:800;text-decoration:none}
-
-    /* Responsive */
-    @media(max-width:880px){
-      .welcome{grid-template-columns:1fr;gap:16px}
-      .logo{width:56px;height:56px}
-      .hero-title{font-size:22px}
+    .opt:hover{background:rgba(255,255,255,0.08);}
+    .opt.selected{
+      background:linear-gradient(90deg,rgba(124,92,255,0.3),rgba(75,182,255,0.25));
+      border:1px solid rgba(124,92,255,0.4);
     }
-    @media(max-width:560px){
-      .options{grid-template-columns:1fr}
+    .bottom{
+      margin-top:16px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .progress{
+      height:8px;background:rgba(255,255,255,0.1);
+      border-radius:999px;overflow:hidden;margin-bottom:16px;
+    }
+    .bar{height:100%;background:linear-gradient(90deg,#7c5cff,#4bb6ff);width:0%;transition:width .3s;}
+
+    /* Result */
+    .result{display:none;text-align:center;}
+    .score{font-size:30px;font-weight:700;margin:8px 0;}
+    .follow{
+      display:inline-flex;align-items:center;gap:8px;
+      background:linear-gradient(90deg,#7c5cff,#4bb6ff);
+      color:white;text-decoration:none;
+      border-radius:10px;padding:10px 16px;
+      font-weight:600;margin-top:18px;
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" role="main" aria-labelledby="title">
-      <div class="brand">
-        <div class="logo" aria-hidden>IDOS</div>
-        <div>
-          <h1 id="title">idOS Project — Quiz</h1>
-          <p class="lead">Learn about idOS Network & test your knowledge</p>
-        </div>
-      </div>
+  <div class="container" id="welcome">
+    <div class="logo">IDOS</div>
+    <h1>idOS Project — Quiz</h1>
+    <p class="lead">Learn about idOS Network & test your knowledge. Short quiz on decentralized identity infrastructure, tokenomics, partners and tech.</p>
+    <div style="text-align:center;margin-bottom:10px;">
+      <button class="btn" id="startQuiz">Start Quiz</button><br>
+      <a href="https://idos.network/docs" target="_blank"><button class="btn secondary">Official Docs</button></a>
+    </div>
+    <div class="info-badges">
+      <div class="badge">12 Questions</div>
+      <div class="badge">Multiple Choice</div>
+      <div class="badge">Instant Feedback</div>
+    </div>
+    <div class="section-title">What you'll learn</div>
+    <ul>
+      <li>idOS purpose & architecture</li>
+      <li>Token supply & TGE timing</li>
+      <li>Security tech (MPC)</li>
+      <li>Ecosystem & partners</li>
+    </ul>
+    <a href="https://x.com/idOS_network" target="_blank" class="follow">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"><path d="M19 7.5c-.3.2-.6.4-.9.5.3-.2.6-.4.9-.5z"/><path d="M19 4.25c-.4.25-.9.42-1.4.5.5-.31.9-.76 1.1-1.31-.5.31-1.06.54-1.66.66C16.9 3 15.95 2.5 15 2.5c-1.8 0-3.25 1.5-3.25 3.3 0 .26.03.52.09.76C8.1 6.38 5.04 4.7 3 2.1c-.29.5-.44 1.08-.44 1.71 0 1.16.6 2.18 1.5 2.78-.55-.02-1.07-.17-1.52-.42v.04c0 1.64 1.14 3.02 2.66 3.33-.44.12-.9.18-1.38.07.39 1.16 1.52 2.02 2.86 2.04C5.3 13.67 4 13.9 2.63 13.64c1.44.92 3.13 1.46 4.96 1.46 5.95 0 9.2-5.04 9.2-9.4v-.43c.63-.45 1.17-1.02 1.6-1.66-.57.26-1.17.44-1.8.52z" fill="white"/></svg>
+      Follow on X
+    </a>
+  </div>
 
-      <!-- Welcome / Front Page -->
-      <div class="welcome" id="welcome">
-        <div class="left">
-          <h2 class="hero-title">Welcome to the idOS Quiz</h2>
-          <p class="hero-sub">Short quiz about idOS — decentralized identity infrastructure, tokenomics, partners and core tech. 12 questions, instant results.</p>
-
-          <div style="display:flex;gap:10px;align-items:center;margin-top:14px">
-            <button class="start-btn" id="startBtn" aria-label="Start Quiz">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="transform:translateY(1px)">
-                <path d="M5 3v18l15-9L5 3z" fill="#061126"/>
-              </svg>
-              Start Quiz
-            </button>
-            <a class="pill" href="https://docs.idos.network" target="_blank" rel="noopener noreferrer">Official docs</a>
-          </div>
-
-          <div class="meta-row">
-            <div class="pill">12 Questions</div>
-            <div class="pill">Multiple Choice</div>
-            <div class="pill">Instant Feedback</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="card-mini" style="text-align:center">
-            <h3 style="margin:0 0 8px 0">What you'll learn</h3>
-            <ul style="list-style:none;padding:0;margin:0;color:var(--muted);text-align:left">
-              <li>• idOS purpose & architecture</li>
-              <li>• Token supply & TGE timing</li>
-              <li>• Security tech (MPC)</li>
-              <li>• Ecosystem & partners</li>
-            </ul>
-            <div style="margin-top:12px">
-              <a class="follow-btn" href="https://x.com/idOS_network" target="_blank" rel="noopener noreferrer">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 7.5c-.3.2-.6.4-.9.5.3-.2.6-.4.9-.5z" fill="currentColor" opacity="0.9"/><path d="M19 4.25c-.4.25-.9.42-1.4.5.5-.31.9-.76 1.1-1.31-.5.31-1.06.54-1.66.66C16.9 3 15.95 2.5 15 2.5c-1.8 0-3.25 1.5-3.25 3.3 0 .26.03.52.09.76C8.1 6.38 5.04 4.7 3 2.1c-.29.5-.44 1.08-.44 1.71 0 1.16.6 2.18 1.5 2.78-.55-.02-1.07-.17-1.52-.42v.04c0 1.64 1.14 3.02 2.66 3.33-.44.12-.9.18-1.38.07.39 1.16 1.52 2.02 2.86 2.04C5.3 13.67 4 13.9 2.63 13.64c1.44.92 3.13 1.46 4.96 1.46 5.95 0 9.2-5.04 9.2-9.4v-.43c.63-.45 1.17-1.02 1.6-1.66-.57.26-1.17.44-1.8.52z" fill="white"/></svg>
-                Follow on X
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quiz area -->
-      <div class="quiz" id="quizArea" aria-hidden="true">
-        <div class="progress" aria-hidden>
-          <i id="progressBar"></i>
-        </div>
-
-        <div class="qcard" id="qcard">
-          <div class="qtop">
-            <div class="qnum" id="qnum">Question 1 of 12</div>
-            <div class="qtime" id="qtime" style="color:var(--muted);font-size:13px"> </div>
-          </div>
-
-          <div class="qtext" id="qtext">Loading...</div>
-
-          <div class="options" id="options"></div>
-        </div>
-
-        <div class="nav">
-          <button class="btn ghost" id="prevBtn" aria-label="Previous">Previous</button>
-          <div style="display:flex;gap:10px">
-            <button class="btn ghost" id="reviewBtn" style="display:none">Review Answers</button>
-            <button class="btn primary" id="nextBtn">Next</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Result -->
-      <div class="result" id="resultArea" aria-hidden="true">
-        <div style="font-size:14px;color:var(--muted)">Your Score</div>
-        <div class="score" id="scoreText">0 / 12</div>
-        <div class="result-meta">
-          <div class="pill" id="correctP">Correct: 0</div>
-          <div class="pill" id="wrongP">Wrong: 0</div>
-        </div>
-
-        <div style="margin-top:14px;display:flex;gap:10px;justify-content:center">
-          <button class="btn ghost" id="showAnsBtn">Show Answers</button>
-          <button class="btn primary" id="restartBtn">Restart Quiz</button>
-        </div>
-
-        <div class="answers" id="answersList" aria-live="polite"></div>
-
-        <div class="follow-row">
-          <a class="follow-btn" href="https://x.com/idOS_network" target="_blank" rel="noopener noreferrer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 7.5c-.3.2-.6.4-.9.5.3-.2.6-.4.9-.5z" fill="currentColor" opacity="0.9"/><path d="M19 4.25c-.4.25-.9.42-1.4.5.5-.31.9-.76 1.1-1.31-.5.31-1.06.54-1.66.66C16.9 3 15.95 2.5 15 2.5c-1.8 0-3.25 1.5-3.25 3.3 0 .26.03.52.09.76C8.1 6.38 5.04 4.7 3 2.1c-.29.5-.44 1.08-.44 1.71 0 1.16.6 2.18 1.5 2.78-.55-.02-1.07-.17-1.52-.42v.04c0 1.64 1.14 3.02 2.66 3.33-.44.12-.9.18-1.38.07.39 1.16 1.52 2.02 2.86 2.04C5.3 13.67 4 13.9 2.63 13.64c1.44.92 3.13 1.46 4.96 1.46 5.95 0 9.2-5.04 9.2-9.4v-.43c.63-.45 1.17-1.02 1.6-1.66-.57.26-1.17.44-1.8.52z" fill="white"/></svg>
-            Follow on X
-          </a>
-        </div>
-      </div>
-
+  <div class="container quiz" id="quizBox">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="bottom">
+      <button class="btn secondary" id="prev">Previous</button>
+      <button class="btn" id="next" disabled>Next</button>
     </div>
   </div>
 
+  <div class="container result" id="resultBox">
+    <h2>Quiz Completed!</h2>
+    <div class="score" id="score"></div>
+    <button class="btn" id="restart">Restart Quiz</button><br>
+    <a href="https://x.com/idOS_network" target="_blank" class="follow">Follow on X</a>
+  </div>
+
   <script>
-    // Questions (12)
-    const QUESTIONS = [
-      { q: "What is the main purpose of the idOS Project?", opts:["To create a Web3 gaming platform","To provide decentralized identity and data control","To launch a new crypto exchange","To build a Layer-1 blockchain"], a:1 },
-      { q: "What type of data does the idOS Network store?", opts:["Only transaction data","Encrypted user identity and credential data","NFT metadata","Blockchain source code"], a:1 },
-      { q: "What is the function of the idOS \"Storage Network\"?", opts:["To trade tokens","To securely store users’ encrypted information","To host game servers","To transfer funds"], a:1 },
-      { q: "What does the Access Management Protocol in idOS do?", opts:["Creates new blocks","Controls who can view or use user data","Mines tokens","Sets network fees"], a:1 },
-      { q: "What is the total supply of the IDOS token?", opts:["100 Million","500 Million","1 Billion","10 Billion"], a:2 },
-      { q: "When is the Token Generation Event (TGE) for IDOS planned?", opts:["Q2 2024","Q4 2025","Q1 2026","Q3 2023"], a:1 },
-      { q: "What type of network is idOS currently operating as?", opts:["Permissionless Network","Permissioned Network","Hybrid Cloud Network","Private Consortium Network"], a:1 },
-      { q: "Which of the following is a partner in the idOS Consortium?", opts:["Binance Labs","Arbitrum Foundation","Coinbase Ventures","Chainlink Labs"], a:1 },
-      { q: "Where is the IDOS token not used?", opts:["Node staking","Data access fees","NFT minting","Incentive rewards"], a:2 },
-      { q: "Which technology is used by idOS to enhance security?", opts:["Zero-Knowledge Proof","Multi-Party Computation (MPC)","Proof-of-Work","Homomorphic Hashing"], a:1 },
-      { q: "What principle is idOS Network built upon?", opts:["Centralized data storage","Self-sovereign identity","Third-party KYC systems","Permissionless finance"], a:1 },
-      { q: "What is a key characteristic of the idOS ecosystem?", opts:["Works only on Ethereum","Chain-agnostic (supports multiple blockchains)","Based solely on the NEAR blockchain","Private blockchain infrastructure"], a:1 }
+    const startBtn=document.getElementById('startQuiz');
+    const welcome=document.getElementById('welcome');
+    const quizBox=document.getElementById('quizBox');
+    const resultBox=document.getElementById('resultBox');
+    const questionEl=document.getElementById('question');
+    const optionsEl=document.getElementById('options');
+    const bar=document.getElementById('bar');
+    const nextBtn=document.getElementById('next');
+    const prevBtn=document.getElementById('prev');
+    const scoreEl=document.getElementById('score');
+    const restart=document.getElementById('restart');
+
+    const data=[
+      {q:"What is the main purpose of the idOS Project?",a:["Web3 gaming platform","Decentralized identity & data control","Crypto exchange","Layer-1 blockchain"],ans:1},
+      {q:"What data does idOS store?",a:["Transaction data","Encrypted identity & credentials","NFT metadata","Smart contracts"],ans:1},
+      {q:"idOS Storage Network is used for?",a:["Trading","Secure data storage","Game servers","Funds transfer"],ans:1},
+      {q:"Access Management Protocol controls?",a:["Who can view or use data","Mining","Creating new blocks","Network fees"],ans:0},
+      {q:"Total supply of IDOS token?",a:["100M","500M","1B","10B"],ans:2},
+      {q:"IDOS Token Generation Event planned?",a:["Q2 2024","Q4 2025","Q1 2026","Q3 2023"],ans:1},
+      {q:"idOS network type?",a:["Permissionless","Permissioned","Hybrid","Private"],ans:1},
+      {q:"Partner in idOS Consortium?",a:["Binance Labs","Arbitrum Foundation","Coinbase","Chainlink"],ans:1},
+      {q:"Where IDOS token not used?",a:["Node staking","Data access","NFT minting","Rewards"],ans:2},
+      {q:"Security tech used by idOS?",a:["ZK Proof","MPC","PoW","Hashing"],ans:1},
+      {q:"Principle idOS built upon?",a:["Centralized","Self-sovereign identity","KYC","Permissionless finance"],ans:1},
+      {q:"idOS ecosystem is?",a:["Ethereum-only","Chain-agnostic","NEAR-only","Private chain"],ans:1}
     ];
+    let i=0,answers=new Array(data.length).fill(null);
 
-    // State
-    let idx = 0;
-    const answers = new Array(QUESTIONS.length).fill(null);
+    startBtn.onclick=()=>{welcome.style.display='none';quizBox.style.display='block';loadQ();}
 
-    // Elements
-    const welcome = document.getElementById('welcome');
-    const quizArea = document.getElementById('quizArea');
-    const resultArea = document.getElementById('resultArea');
-    const startBtn = document.getElementById('startBtn');
-    const progressBar = document.getElementById('progressBar');
-    const qnumEl = document.getElementById('qnum');
-    const qtextEl = document.getElementById('qtext');
-    const optsElRoot = document.getElementById('options');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const reviewBtn = document.getElementById('reviewBtn');
-    const scoreText = document.getElementById('scoreText');
-    const correctP = document.getElementById('correctP');
-    const wrongP = document.getElementById('wrongP');
-    const answersList = document.getElementById('answersList');
-    const showAnsBtn = document.getElementById('showAnsBtn');
-    const restartBtn = document.getElementById('restartBtn');
-
-    // Start Quiz
-    startBtn.addEventListener('click', ()=> {
-      welcome.style.display = 'none';
-      quizArea.style.display = 'flex';
-      quizArea.setAttribute('aria-hidden', 'false');
-      renderQuestion();
-    });
-
-    // Render
-    function renderQuestion(){
-      const item = QUESTIONS[idx];
-      qnumEl.textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
-      qtextEl.textContent = item.q;
-      optsElRoot.innerHTML = '';
-      item.opts.forEach((o,i) => {
-        const d = document.createElement('div');
-        d.className = 'opt';
-        d.tabIndex = 0;
-        d.setAttribute('role','button');
-        d.innerHTML = `<strong style="margin-right:8px">${String.fromCharCode(65+i)}.</strong><span>${o}</span>`;
-        if (answers[idx] === i) d.classList.add('selected');
-        d.addEventListener('click', ()=> selectOption(i));
-        d.addEventListener('keydown', (e)=> { if(e.key === 'Enter') selectOption(i); });
-        optsElRoot.appendChild(d);
+    function loadQ(){
+      const q=data[i];
+      questionEl.textContent=`Q${i+1}. ${q.q}`;
+      optionsEl.innerHTML='';
+      q.a.forEach((opt,idx)=>{
+        const div=document.createElement('div');
+        div.className='opt';
+        div.textContent=opt;
+        if(answers[i]===idx)div.classList.add('selected');
+        div.onclick=()=>{select(idx)};
+        optionsEl.appendChild(div);
       });
-
-      updateProgress();
-      nextBtn.textContent = idx === QUESTIONS.length-1 ? 'Finish' : 'Next';
-      prevBtn.style.visibility = idx === 0 ? 'hidden' : 'visible';
-      reviewBtn.style.display = 'none';
+      bar.style.width=`${(i/data.length)*100}%`;
+      nextBtn.disabled=answers[i]===null;
     }
 
-    function selectOption(i){
-      answers[idx] = i;
-      const nodes = optsElRoot.querySelectorAll('.opt');
-      nodes.forEach(n => n.classList.remove('selected'));
-      if (nodes[i]) nodes[i].classList.add('selected');
+    function select(idx){
+      answers[i]=idx;
+      document.querySelectorAll('.opt').forEach(e=>e.classList.remove('selected'));
+      document.querySelectorAll('.opt')[idx].classList.add('selected');
+      nextBtn.disabled=false;
     }
 
-    prevBtn.addEventListener('click', ()=> {
-      if (idx > 0) { idx--; renderQuestion(); }
-    });
+    nextBtn.onclick=()=>{
+      if(i<data.length-1){i++;loadQ();}
+      else finish();
+    }
+    prevBtn.onclick=()=>{if(i>0){i--;loadQ();}}
 
-    nextBtn.addEventListener('click', ()=> {
-      if (idx < QUESTIONS.length-1) { idx++; renderQuestion(); }
-      else finishQuiz();
-    });
-
-    function updateProgress(){
-      const pct = Math.round((idx / QUESTIONS.length) * 100);
-      progressBar.style.width = `${pct}%`;
+    function finish(){
+      let c=0;
+      data.forEach((q,idx)=>{if(answers[idx]===q.ans)c++;});
+      quizBox.style.display='none';
+      resultBox.style.display='block';
+      scoreEl.textContent=`${c} / ${data.length} Correct`;
+      bar.style.width='100%';
     }
 
-    // Finish
-    function finishQuiz(){
-      let correct = 0;
-      QUESTIONS.forEach((q,i)=> { if (answers[i] === q.a) correct++; });
-      scoreText.textContent = `${correct} / ${QUESTIONS.length}`;
-      correctP.textContent = `Correct: ${correct}`;
-      wrongP.textContent = `Wrong: ${QUESTIONS.length - correct}`;
-      quizArea.style.display = 'none';
-      resultArea.style.display = 'block';
-      resultArea.setAttribute('aria-hidden','false');
-      // show review button on quiz hidden
-      reviewBtn.style.display = 'inline-flex';
-      progressBar.style.width = '100%';
-    }
-
-    // Show answers
-    showAnsBtn.addEventListener('click', showAnswers);
-    function showAnswers(){
-      answersList.innerHTML = '';
-      QUESTIONS.forEach((q,i) => {
-        const div = document.createElement('div');
-        div.className = 'answer-item';
-        const chosen = answers[i] === null ? 'No answer' : `${String.fromCharCode(65+answers[i])}. ${q.opts[answers[i]]}`;
-        const correct = `${String.fromCharCode(65+q.a)}. ${q.opts[q.a]}`;
-        div.innerHTML = `<strong>Q${i+1}:</strong> ${q.q}
-          <div style="margin-top:8px;color:var(--muted)">Your answer: <span class="${answers[i]===q.a ? 'correct' : 'wrong'}">${chosen}</span></div>
-          <div style="margin-top:6px;color:var(--muted)">Correct: <span class="correct">${correct}</span></div>`;
-        answersList.appendChild(div);
-      });
-      // scroll to answers
-      answersList.scrollIntoView({behavior:'smooth'});
-    }
-
-    // Restart
-    restartBtn.addEventListener('click', ()=> {
-      idx = 0;
-      for (let i=0;i<answers.length;i++) answers[i] = null;
-      resultArea.style.display = 'none';
-      quizArea.style.display = 'flex';
-      progressBar.style.width = '0%';
-      renderQuestion();
-    });
-
-    // Allow review (go to first unanswered)
-    reviewBtn.addEventListener('click', ()=> {
-      // find first unanswered or go to first
-      const firstUn = answers.findIndex(a => a === null);
-      idx = firstUn === -1 ? 0 : firstUn;
-      resultArea.style.display = 'none';
-      quizArea.style.display = 'flex';
-      renderQuestion();
-    });
-
-    // Keyboard: left/right
-    window.addEventListener('keydown', (e)=> {
-      if (quizArea.style.display !== 'none') {
-        if (e.key === 'ArrowRight') nextBtn.click();
-        if (e.key === 'ArrowLeft') prevBtn.click();
-      }
-    });
-
-    // Initial: keep welcome visible
-    (function init(){
-      welcome.style.display = 'grid';
-      quizArea.style.display = 'none';
-      resultArea.style.display = 'none';
-      progressBar.style.width = '0%';
-    })();
+    restart.onclick=()=>{i=0;answers.fill(null);resultBox.style.display='none';quizBox.style.display='block';loadQ();bar.style.width='0%';}
   </script>
 </body>
 </html>
