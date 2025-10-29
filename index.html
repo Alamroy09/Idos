@@ -3,207 +3,263 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>idOS Project — Quiz</title>
+  <title>idOS Project Quiz</title>
   <style>
-    /* ====== GLOBAL STYLES ====== */
     body {
+      font-family: "Poppins", sans-serif;
       margin: 0;
-      padding: 0;
-      font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top, #0b0f2c 0%, #020617 100%);
-      color: #d6d9e0;
+      background: radial-gradient(circle at top, #0a0e1a, #05070d);
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
     }
-
-    .card {
-      background: rgba(17, 25, 40, 0.75);
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(12px);
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      width: 90%;
-      max-width: 420px;
-      padding: 32px 24px;
-      text-align: left;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      display: none;
     }
-
-    .title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
+    .active {
+      display: block;
+      animation: fadeIn 0.6s ease;
     }
-
-    .logo {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #5b5fff, #3ac8ff);
-      color: white;
-      font-weight: 700;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.2rem;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    h2 {
-      font-size: 1.3rem;
-      margin: 0;
-      color: white;
-    }
-
-    .subtitle {
-      font-size: 0.85rem;
-      color: #aab1c6;
-      margin-top: 4px;
-      margin-bottom: 18px;
-    }
-
     h1 {
-      color: white;
-      font-size: 1.4rem;
       margin-bottom: 10px;
+      font-size: 28px;
+      color: #fff;
     }
-
     p {
-      color: #b4bad1;
-      font-size: 0.9rem;
-      line-height: 1.5;
+      color: #b7c6ff;
+      margin-bottom: 30px;
     }
-
-    /* ====== BUTTONS ====== */
-    .button-group {
-      margin-top: 20px;
-      display: flex;
-      gap: 12px;
-    }
-
-    .start-btn {
-      background: linear-gradient(135deg, #5b5fff, #3ac8ff);
+    button {
+      background: linear-gradient(90deg, #7a5cff, #4ba3ff);
       color: white;
-      padding: 10px 18px;
       border: none;
-      border-radius: 10px;
-      font-weight: 600;
+      padding: 14px 32px;
+      font-size: 16px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
     }
-
-    .docs-btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: #d6d9e0;
-      padding: 10px 18px;
-      border: none;
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+    .small-btn {
+      background: rgba(255,255,255,0.1);
+      color: #b7c6ff;
+      margin-left: 10px;
+    }
+    .option {
+      background: rgba(255,255,255,0.1);
+      margin: 10px 0;
+      padding: 12px;
       border-radius: 10px;
-      font-weight: 500;
       cursor: pointer;
-    }
-
-    /* ====== TAGS ====== */
-    .tags {
-      margin-top: 18px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      background: rgba(255, 255, 255, 0.08);
-      color: #d6d9e0;
-      font-size: 0.8rem;
-      padding: 6px 12px;
-      border-radius: 20px;
-    }
-
-    /* ====== LEARN SECTION ====== */
-    .learn {
-      margin-top: 26px;
-    }
-
-    .learn h3 {
-      color: white;
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-
-    ul {
-      list-style: disc;
-      padding-left: 20px;
-      margin: 0;
-    }
-
-    li {
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-      color: #aab1c6;
-    }
-
-    /* ====== FOLLOW BUTTON ====== */
-    .follow-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #5b5fff, #3ac8ff);
-      color: white;
-      padding: 10px 18px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 20px;
       transition: 0.3s;
     }
-
-    .follow-btn:hover {
-      opacity: 0.9;
+    .option:hover {
+      background: rgba(255,255,255,0.2);
     }
-
-    .follow-btn span {
-      font-size: 1rem;
+    .selected {
+      background: linear-gradient(90deg, #7a5cff, #4ba3ff);
+    }
+    #logo {
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #7a5cff, #4ba3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .follow-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #7a5cff, #4ba3ff);
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="title">
-      <div class="logo">IDOS</div>
-      <div>
-        <h2>idOS Project — Quiz</h2>
-        <div class="subtitle">Learn about idOS Network & test your knowledge</div>
-      </div>
-    </div>
-
-    <h1>Welcome to the idOS Quiz</h1>
-    <p>
-      Short quiz about idOS — decentralized identity infrastructure, tokenomics,
-      partners and core tech. 12 questions, instant results.
-    </p>
-
-    <div class="button-group">
-      <button class="start-btn">▶ Start Quiz</button>
-      <button class="docs-btn">Official docs</button>
-    </div>
-
-    <div class="tags">
-      <div class="tag">12 Questions</div>
-      <div class="tag">Multiple Choice</div>
-      <div class="tag">Instant Feedback</div>
-    </div>
-
-    <div class="learn">
-      <h3>What you'll learn</h3>
-      <ul>
-        <li>idOS purpose & architecture</li>
-        <li>Token supply & TGE timing</li>
-        <li>Security tech (MPC)</li>
-        <li>Ecosystem & partners</li>
-      </ul>
-      <a href="#" class="follow-btn">
-        <span>🐦</span> Follow on X
-      </a>
-    </div>
+  <div class="container active" id="start-page">
+    <div id="logo">idOS</div>
+    <h1>Welcome to the idOS Project Quiz</h1>
+    <p>Test your knowledge about the decentralized identity protocol built for Web3.</p>
+    <button onclick="startQuiz()">Start Quiz</button>
+    <button class="small-btn" onclick="window.open('https://docs.idos.network','_blank')">Official Docs</button>
+    <br />
+    <a href="https://x.com/idOS_network" target="_blank" class="follow-btn">Follow on X</a>
   </div>
+
+  <div class="container" id="quiz-page">
+    <h1 id="question"></h1>
+    <div id="options"></div>
+    <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+  </div>
+
+  <div class="container" id="result-page">
+    <h1>Your Score</h1>
+    <p id="score-text"></p>
+    <button onclick="showAnswers()">Show Answers</button>
+    <button onclick="restartQuiz()">Restart Quiz</button>
+    <br />
+    <a href="https://x.com/idOS_network" target="_blank" class="follow-btn">Follow on X</a>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "What is idOS primarily designed for?",
+        options: ["Decentralized identity management", "Blockchain gaming", "NFT minting", "AI data analytics"],
+        answer: 0
+      },
+      {
+        q: "Which blockchain ecosystem is idOS compatible with?",
+        options: ["Polkadot", "Ethereum", "Cosmos", "All of the above"],
+        answer: 3
+      },
+      {
+        q: "What kind of data does idOS help manage?",
+        options: ["Financial records", "Identity and KYC data", "Gaming assets", "Supply chain data"],
+        answer: 1
+      },
+      {
+        q: "Who can access a user’s data on idOS?",
+        options: ["Anyone", "Only verified apps with user permission", "Developers", "Validators"],
+        answer: 1
+      },
+      {
+        q: "Which standard does idOS follow for identity data?",
+        options: ["OpenID", "W3C Verifiable Credentials", "OAuth2", "SAML"],
+        answer: 1
+      },
+      {
+        q: "What makes idOS unique?",
+        options: ["It stores user data publicly", "It gives users full control of their data", "It uses no encryption", "It’s only for enterprises"],
+        answer: 1
+      },
+      {
+        q: "Which company is a core contributor to idOS?",
+        options: ["Fractal ID", "MetaMask", "Coinbase", "Consensys"],
+        answer: 0
+      },
+      {
+        q: "idOS ensures data privacy using?",
+        options: ["Smart contracts", "Zero-knowledge proofs", "Proof of Work", "Sidechains"],
+        answer: 1
+      },
+      {
+        q: "Developers can integrate idOS using?",
+        options: ["REST APIs", "idOS SDK", "Custom blockchain", "AI models"],
+        answer: 1
+      },
+      {
+        q: "What problem does idOS aim to solve?",
+        options: ["Duplicate identity verification", "Slow transactions", "Scalability", "Mining difficulty"],
+        answer: 0
+      },
+      {
+        q: "Is idOS open-source?",
+        options: ["Yes", "No", "Partially", "Not sure"],
+        answer: 0
+      },
+      {
+        q: "What does idOS stand for?",
+        options: ["Identity Operating System", "Internet of Systems", "Integrated Data OS", "Identified Open Service"],
+        answer: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let selectedOption = null;
+
+    const startPage = document.getElementById("start-page");
+    const quizPage = document.getElementById("quiz-page");
+    const resultPage = document.getElementById("result-page");
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const scoreText = document.getElementById("score-text");
+
+    function startQuiz() {
+      startPage.classList.remove("active");
+      quizPage.classList.add("active");
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.q;
+      optionsEl.innerHTML = "";
+      q.options.forEach((opt, i) => {
+        const div = document.createElement("div");
+        div.textContent = opt;
+        div.classList.add("option");
+        div.onclick = () => selectOption(i, div);
+        optionsEl.appendChild(div);
+      });
+      nextBtn.disabled = true;
+    }
+
+    function selectOption(i, div) {
+      selectedOption = i;
+      document.querySelectorAll(".option").forEach(opt => opt.classList.remove("selected"));
+      div.classList.add("selected");
+      nextBtn.disabled = false;
+    }
+
+    function nextQuestion() {
+      if (selectedOption === questions[currentQuestion].answer) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      quizPage.classList.remove("active");
+      resultPage.classList.add("active");
+      scoreText.textContent = `You scored ${score} out of ${questions.length}!`;
+    }
+
+    function showAnswers() {
+      let answerList = "";
+      questions.forEach((q, i) => {
+        answerList += `${i + 1}. ${q.q} — <b>${q.options[q.answer]}</b><br>`;
+      });
+      scoreText.innerHTML = `You scored ${score}/${questions.length}<br><br><div style="text-align:left">${answerList}</div>`;
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      selectedOption = null;
+      resultPage.classList.remove("active");
+      startPage.classList.add("active");
+    }
+  </script>
 </body>
 </html>
